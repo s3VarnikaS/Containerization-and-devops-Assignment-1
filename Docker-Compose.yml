@@ -1,0 +1,33 @@
+services:
+
+  backend:
+    image: backend-image
+    container_name: backend_api
+    restart: always
+    environment:
+      DB_HOST: postgres_db
+      POSTGRES_DB: mydb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    depends_on:
+      - postgres_db
+    networks:
+      myipvlan:
+        ipv4_address: 192.168.100.10
+
+  postgres_db:
+    image: postgres-image
+    container_name: postgres_db
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      myipvlan:
+        ipv4_address: 192.168.100.11
+
+volumes:
+  pgdata:
+
+networks:
+  myipvlan:
+    external: true
